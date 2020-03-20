@@ -32,7 +32,7 @@ public class UI_SlotPanel : MonoBehaviour
 
     protected void DrawPanel()
     {
-        slotContainer.GetComponent<RectTransform>().anchoredPosition += new Vector2(-(slotSize / 2) * (colums - 1), (slotSize / 2) * (rows - 1));
+        slotContainer.GetComponent<RectTransform>().anchoredPosition += new Vector2(-(slotSize / 2) * (colums - 1), (slotSize / 2) * (rows - 1)); // move container to center
         GetComponent<RectTransform>().sizeDelta = new Vector2((100 * colums) + 50, (100 * rows) + 50); // scale panel
 
         ui_slots = new UI_Slot[rows, colums];
