@@ -15,17 +15,20 @@ public class UI_SlotPanel : MonoBehaviour
 
     protected List<Inventory.Slot> slots;
 
+    public List<Item> testItems;
+
     // Start is called before the first frame update
     void Start()
     {
         slots = new List<Inventory.Slot>();
+        for(int i = 0; i < testItems.Count; i++)
+        {
+            slots.Add(new Inventory.Slot());
+            slots[i].Item = testItems[i];
+            slots[i].Amount = 1;
+        }
         CreatePanel();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        DrawIcons();
     }
 
     private void CreatePanel()
@@ -35,36 +38,37 @@ public class UI_SlotPanel : MonoBehaviour
 
         ui_slots = new UI_Slot[rows, colums];
 
-        for (int i = 0; i < rows; i++)
+        for (int row = 0; row < rows; row++)
         {
-            for (int j = 0; j < colums; j++)
+            for (int col = 0; col < colums; col++)
             {
-                ui_slots[i, j] = Instantiate(slotPrefab, slotContainer).GetComponent<UI_Slot>();
-                ui_slots[i, j].GetComponent<RectTransform>().anchoredPosition = new Vector2(i * slotSize, -j * slotSize);
-                ui_slots[i, j].gameObject.SetActive(true);
+                ui_slots[row, col] = Instantiate(slotPrefab, slotContainer).GetComponent<UI_Slot>();
+                ui_slots[row, col].GetComponent<RectTransform>().anchoredPosition = new Vector2(col * slotSize, -row * slotSize);
+                ui_slots[row, col].gameObject.SetActive(true);
             }
         }
     }
 
     private void DrawIcons()
     {
-        for (int i = 0; i < rows; i++)
+        for (int row = 0; row < rows; row++)
         {
-            for (int j = 0; j < colums; j++)
+            for (int col = 0; col < colums; col++)
             {
-                Inventory.Slot slot = slots[i + colums * j];
+                if (col + (rows * row) >= slots.Count)
+                    return;
+
+                Inventory.Slot slot = slots[col + (rows * row)];
 
                 if (!slot.Empty)
                 {
-                    ui_slots[i, j].SetItemIcon(slots[i + colums * j].Item.Sprite);
-                    ui_slots[i, j].ShowIcon();
+                    ui_slots[row, col].SetItemIcon(slot.Item.Sprite);
+                    ui_slots[row, col].ShowIcon();
                 }
                 else
                 {
-                    ui_slots[i, j].HideIcon();
+                    ui_slots[row, col].HideIcon();
                 }
-
-
             }
         }
     }

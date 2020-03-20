@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class UI_Slot : MonoBehaviour
 {
-    Image itemIcon;
-    private void Start()
+    Image slotSprite, itemIcon;
+
+    private void Awake()
     {
-        itemIcon = GetComponentInChildren<Image>();
+        Image[] images = GetComponentsInChildren<Image>(true);
+        slotSprite = images[0];
+        itemIcon = images[1];
     }
 
     public void SetItemIcon(Sprite sprite)
