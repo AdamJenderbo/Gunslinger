@@ -116,7 +116,8 @@ public class UI : MonoBehaviour
     public void ShowLoot(Loot loot)
     {
         ui_loot.gameObject.SetActive(true);
-        ui_loot.Draw(loot);
+        ui_loot.SetLoot(loot);
+        ui_loot.ShowLoot();
     }
 
     public void HideLoot()

@@ -8,26 +8,19 @@ public class UI_SlotPanel : MonoBehaviour
     public int rows, colums;
     public UI_Slot[,] ui_slots;
 
-    public float slotSize;
+    float slotSize;
 
     public Transform slotPrefab;
     public Transform slotContainer;
 
     protected List<Inventory.Slot> slots;
 
-    public List<Item> testItems;
-
     // Start is called before the first frame update
     void Start()
     {
+        slotSize = 95;
         slots = new List<Inventory.Slot>();
-        for(int i = 0; i < testItems.Count; i++)
-        {
-            slots.Add(new Inventory.Slot());
-            slots[i].Item = testItems[i];
-            slots[i].Amount = 1;
-        }
-        CreatePanel();
+        DrawPanel();
         DrawIcons();
     }
 
@@ -37,10 +30,10 @@ public class UI_SlotPanel : MonoBehaviour
         this.slots = slots;
     }
 
-    private void CreatePanel()
+    protected void DrawPanel()
     {
-        slotContainer.GetComponent<RectTransform>().anchoredPosition += new Vector2((rows / 2) * -slotSize, slotSize); // move slot container to middle
-        GetComponent<RectTransform>().sizeDelta = new Vector2(350, 350); // scale panel
+        Debug.Log(slotContainer.GetComponent<RectTransform>().pivot);
+        GetComponent<RectTransform>().sizeDelta = new Vector2((100 * colums) + 50, (100 * rows) + 50); // scale panel
 
         ui_slots = new UI_Slot[rows, colums];
 
@@ -55,7 +48,7 @@ public class UI_SlotPanel : MonoBehaviour
         }
     }
 
-    private void DrawIcons()
+    protected void DrawIcons()
     {
         for (int row = 0; row < rows; row++)
         {
