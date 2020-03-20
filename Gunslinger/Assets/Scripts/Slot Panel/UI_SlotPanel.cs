@@ -31,6 +31,12 @@ public class UI_SlotPanel : MonoBehaviour
         DrawIcons();
     }
 
+
+    protected void SetSlots(List<Inventory.Slot> slots)
+    {
+        this.slots = slots;
+    }
+
     private void CreatePanel()
     {
         slotContainer.GetComponent<RectTransform>().anchoredPosition += new Vector2((rows / 2) * -slotSize, slotSize); // move slot container to middle
