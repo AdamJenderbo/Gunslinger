@@ -6598,6 +6598,18 @@ MonoBehaviour:
     Amount: 1
   - Item: {fileID: 11400000, guid: f2dcc10a357d912478873a1452b5cff6, type: 2}
     Amount: 1
+  - Item: {fileID: 11400000, guid: f2dcc10a357d912478873a1452b5cff6, type: 2}
+    Amount: 1
+  - Item: {fileID: 11400000, guid: f2dcc10a357d912478873a1452b5cff6, type: 2}
+    Amount: 1
+  - Item: {fileID: 11400000, guid: f2dcc10a357d912478873a1452b5cff6, type: 2}
+    Amount: 1
+  - Item: {fileID: 11400000, guid: f2dcc10a357d912478873a1452b5cff6, type: 2}
+    Amount: 1
+  - Item: {fileID: 11400000, guid: f2dcc10a357d912478873a1452b5cff6, type: 2}
+    Amount: 1
+  - Item: {fileID: 11400000, guid: f2dcc10a357d912478873a1452b5cff6, type: 2}
+    Amount: 1
 --- !u!1001 &873612263
 PrefabInstance:
   m_ObjectHideFlags: 0

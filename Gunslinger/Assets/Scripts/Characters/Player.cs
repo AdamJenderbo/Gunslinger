@@ -50,8 +50,6 @@ public class Player : Character, ICustomer
     private void Awake()
     {
         instance = this;
-
-
         inventory = new Inventory(13);
         //inventory.SetGun(new GunItem(gun));
     }

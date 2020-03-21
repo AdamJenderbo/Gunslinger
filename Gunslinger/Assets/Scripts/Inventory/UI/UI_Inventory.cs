@@ -3,61 +3,61 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Inventory : MonoBehaviour
+public class UI_Inventory : UI_SlotPanel
 {
-    public Transform pfUI_Item;
+    //public Transform pfUI_Item;
 
     Inventory inventory;
 
-    public int colums;
-
-    public Transform itemSlotContainer;
-    public Transform itemSlotTemplate;
+    //public Transform itemSlotContainer;
+    //public Transform itemSlotTemplate;
 
     public Transform hotkeySlotContainer;
-
 
     public UI_ItemSlot gunSlot;
     public Image gunImage;
 
     public bool hidden;
-    float itemSlotCellSize = 96f;
+    //float itemSlotCellSize = 96f;
     private int nrHotkeySlots = 4;
 
     public List<Sprite> slotSprites;
 
     private void Awake()
     {
-        itemSlotContainer = transform.Find("Item Slots");
-        itemSlotTemplate = itemSlotContainer.Find("Item Slot");
-        itemSlotTemplate.gameObject.SetActive(false);
-        gunSlot.SetOnDropAction(() => {
-            Item draggedItem = UI_DraggedItem.Instance.GetItem();
-            if (draggedItem.IsGun())
-            {
-                inventory.RemoveItem(draggedItem);
-                draggedItem.Use();
-            }
-        });
-
-
+        //itemSlotContainer = transform.Find("Item Slots");
+        //itemSlotTemplate = itemSlotContainer.Find("Item Slot");
+        //itemSlotTemplate.gameObject.SetActive(false);
+        rows = 3;
+        colums = 3;
+        Setup();
     }
 
     public void Start()
     {
         inventory = Player.instance.GetInventory();
+        Inventory.Slot[] inventorySlots = inventory.GetSlots();
+        List<Inventory.Slot> slots = new List<Inventory.Slot>();
+        for(int i = 0; i < inventorySlots.Length - 4; i++)
+        {
+            slots.Add(inventorySlots[i]);
+        }
+        SetSlots(slots);
+        if (inventory == null) Debug.LogError("null");
         inventory.onItemChangedCallback += RefreshInventory;
+        DrawPanel();
         RefreshInventory();
     }
 
     public void RefreshInventory()
     {
-        RefreshHotKeySlots();
+        //RefreshHotKeySlots();
 
         if (hidden)
             return;
 
-        CreateItemSlots(nrHotkeySlots, inventory.Space - nrHotkeySlots, colums, itemSlotContainer);
+        DrawIcons();
+        //CreateItemSlots(nrHotkeySlots, inventory.Space - nrHotkeySlots, colums, itemSlotContainer);
     }
 
     public void RefreshGunSlot()
@@ -86,6 +86,7 @@ public class UI_Inventory : MonoBehaviour
 
     private void CreateItemSlots(int start, int nr, int colums, Transform container)
     {
+        /*
         foreach (Transform child in itemSlotContainer)
         {
             if (child == itemSlotTemplate) continue;
@@ -133,6 +134,8 @@ public class UI_Inventory : MonoBehaviour
                 x = 0;
                 y++;
             }
+            
         }
+    */
     }
 }

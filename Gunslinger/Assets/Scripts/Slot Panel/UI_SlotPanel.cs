@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UI_SlotPanel : MonoBehaviour
 {
-    public int rows, colums;
+    protected int rows, colums;
     public UI_Slot[,] ui_slots;
+    public UI_Button[,] ui_buttons;
 
     float slotSize;
 
@@ -13,12 +15,6 @@ public class UI_SlotPanel : MonoBehaviour
     public Transform slotContainer;
 
     protected List<Inventory.Slot> slots;
-
-    // Start is called before the first frame update
-    void Awake()
-    {
-
-    }
 
     protected void Setup()
     {
@@ -43,6 +39,7 @@ public class UI_SlotPanel : MonoBehaviour
         GetComponent<RectTransform>().sizeDelta = new Vector2((100 * colums) + 50, (100 * rows) + 50); // scale panel
 
         ui_slots = new UI_Slot[rows, colums];
+        ui_buttons = new UI_Button[rows, colums];
 
         for (int row = 0; row < rows; row++)
         {
@@ -51,6 +48,7 @@ public class UI_SlotPanel : MonoBehaviour
                 ui_slots[row, col] = Instantiate(slotPrefab, slotContainer).GetComponent<UI_Slot>();
                 ui_slots[row, col].GetComponent<RectTransform>().anchoredPosition = new Vector2(col * slotSize, -row * slotSize);
                 ui_slots[row, col].gameObject.SetActive(true);
+                ui_buttons[row, col] = ui_slots[row, col].GetComponent<UI_Button>();
             }
         }
     }
@@ -64,7 +62,7 @@ public class UI_SlotPanel : MonoBehaviour
                 if (col + (rows * row) >= slots.Count)
                     return;
 
-                Inventory.Slot slot = slots[col + (rows * row)];
+                Inventory.Slot slot = slots[col + (colums * row)];
 
                 if (!slot.Empty)
                 {
@@ -77,5 +75,10 @@ public class UI_SlotPanel : MonoBehaviour
                 }
             }
         }
+    }
+
+    protected void SetButtonAction(int row, int col, Action action)
+    {
+        ui_buttons[row, col].MouseLeftClickFunc = action;
     }
 }

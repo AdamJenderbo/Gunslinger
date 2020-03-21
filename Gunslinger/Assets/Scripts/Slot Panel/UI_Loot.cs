@@ -23,6 +23,19 @@ public class UI_Loot : UI_SlotPanel
     {
         SetSlots(loot.slots);
         DrawIcons();
+        for(int row = 0; row < rows; row++)
+        {
+            for(int col = 0; col < colums; col++)
+            {
+
+                Inventory.Slot slot = loot.slots[col + (colums * row)];
+                SetButtonAction(row, col, () =>
+                {
+                    loot.SlotClicked(slot);
+                    DrawIcons();
+                });
+            }
+        }
     }
 
     public void HideLoot()
