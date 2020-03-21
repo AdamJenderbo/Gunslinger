@@ -40,14 +40,14 @@ public class UI_Inventory : MonoBehaviour
             }
         });
 
-        inventory = Player.instance.GetInventory();
-        inventory.onItemChangedCallback += RefreshInventory;
-        RefreshInventory();
+
     }
 
     public void Start()
     {
-
+        inventory = Player.instance.GetInventory();
+        inventory.onItemChangedCallback += RefreshInventory;
+        RefreshInventory();
     }
 
     public void RefreshInventory()

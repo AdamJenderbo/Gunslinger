@@ -19,7 +19,6 @@ public class UI_Slot : MonoBehaviour
         itemIcon.sprite = sprite;
     }
 
-
     public void ShowIcon()
     {
         itemIcon.gameObject.SetActive(true);

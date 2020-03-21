@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UI_SlotPanel : MonoBehaviour
 {
-
     public int rows, colums;
     public UI_Slot[,] ui_slots;
 
@@ -16,14 +15,16 @@ public class UI_SlotPanel : MonoBehaviour
     protected List<Inventory.Slot> slots;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
+    {
+
+    }
+
+    protected void Setup()
     {
         slotSize = 95;
         slots = new List<Inventory.Slot>();
-        DrawPanel();
-        DrawIcons();
     }
-
 
     protected void SetSlots(List<Inventory.Slot> slots)
     {
@@ -32,6 +33,12 @@ public class UI_SlotPanel : MonoBehaviour
 
     protected void DrawPanel()
     {
+        foreach (Transform child in slotContainer)
+        {
+            if (child == slotPrefab) continue;
+            Destroy(child.gameObject);
+        }
+
         slotContainer.GetComponent<RectTransform>().anchoredPosition += new Vector2(-(slotSize / 2) * (colums - 1), (slotSize / 2) * (rows - 1)); // move container to center
         GetComponent<RectTransform>().sizeDelta = new Vector2((100 * colums) + 50, (100 * rows) + 50); // scale panel
 
@@ -61,8 +68,8 @@ public class UI_SlotPanel : MonoBehaviour
 
                 if (!slot.Empty)
                 {
-                    ui_slots[row, col].SetItemIcon(slot.Item.Sprite);
                     ui_slots[row, col].ShowIcon();
+                    ui_slots[row, col].SetItemIcon(slot.Item.Sprite);
                 }
                 else
                 {
