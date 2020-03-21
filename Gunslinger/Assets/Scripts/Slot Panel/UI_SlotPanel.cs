@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_SlotPanel : MonoBehaviour
 {
@@ -13,18 +14,29 @@ public class UI_SlotPanel : MonoBehaviour
 
     public Transform slotPrefab;
     public Transform slotContainer;
+    RectTransform header;
+    Text headerText;
+    float border;
 
     protected List<Inventory.Slot> slots;
 
     protected void Setup()
     {
         slotSize = 95;
+        border = 35;
         slots = new List<Inventory.Slot>();
+        header = GetComponentsInChildren<Image>()[1].rectTransform;
+        headerText = header.GetComponentInChildren<Text>();
     }
 
     protected void SetSlots(List<Inventory.Slot> slots)
     {
         this.slots = slots;
+    }
+
+    protected void SetHeaderText(string text)
+    {
+        headerText.text = text;
     }
 
     protected void DrawPanel()
@@ -51,6 +63,9 @@ public class UI_SlotPanel : MonoBehaviour
                 ui_buttons[row, col] = ui_slots[row, col].GetComponent<UI_Button>();
             }
         }
+
+
+        header.anchoredPosition += new Vector2(-((slotSize / 2) * (colums - 2)+10), ((slotSize / 2) * rows) + border );
     }
 
     protected void DrawIcons()

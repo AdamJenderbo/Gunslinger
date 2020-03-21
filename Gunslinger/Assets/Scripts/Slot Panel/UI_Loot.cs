@@ -12,6 +12,7 @@ public class UI_Loot : UI_SlotPanel
         colums = 4;
         rows = 2;
         DrawPanel();
+        SetHeaderText("Loot");
     }
 
     public void SetLoot(Loot loot)

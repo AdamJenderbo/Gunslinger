@@ -31,6 +31,7 @@ public class UI_Inventory : UI_SlotPanel
         rows = 3;
         colums = 3;
         Setup();
+        SetHeaderText("Inventory");
     }
 
     public void Start()
