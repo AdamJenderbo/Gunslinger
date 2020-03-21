@@ -64,7 +64,6 @@ public class UI_SlotPanel : MonoBehaviour
             }
         }
 
-
         header.anchoredPosition += new Vector2(-((slotSize / 2) * (colums - 2)+10), ((slotSize / 2) * rows) + border );
     }
 
@@ -83,6 +82,7 @@ public class UI_SlotPanel : MonoBehaviour
                 {
                     ui_slots[row, col].ShowIcon();
                     ui_slots[row, col].SetItemIcon(slot.Item.Sprite);
+                    ui_slots[row, col].SetItemAmount(slot.Amount);
                 }
                 else
                 {

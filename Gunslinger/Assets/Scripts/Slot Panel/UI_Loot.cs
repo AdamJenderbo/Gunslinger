@@ -28,7 +28,6 @@ public class UI_Loot : UI_SlotPanel
         {
             for(int col = 0; col < colums; col++)
             {
-
                 Inventory.Slot slot = loot.slots[col + (colums * row)];
                 SetButtonAction(row, col, () =>
                 {

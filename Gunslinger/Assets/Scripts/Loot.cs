@@ -28,6 +28,8 @@ public class Loot : MonoBehaviour
 
     public void SlotClicked(Inventory.Slot slot)
     {
+        if (slot.Empty)
+            return;
         player.PickUp(slot.Item);
         slot.Clear();
     }
