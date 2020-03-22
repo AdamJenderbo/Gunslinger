@@ -32,6 +32,13 @@ public class UI_SlotPanel : MonoBehaviour
     protected void SetSlots(List<Inventory.Slot> slots)
     {
         this.slots = slots;
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < colums; col++)
+            {
+                ui_slots[row, col].SetSlot(slots[col + (colums * row)]);
+            }
+        }
     }
 
     protected void SetHeaderText(string text)
@@ -81,8 +88,6 @@ public class UI_SlotPanel : MonoBehaviour
                 if (!slot.Empty)
                 {
                     ui_slots[row, col].ShowIcon();
-                    ui_slots[row, col].SetItemIcon(slot.Item.Sprite);
-                    ui_slots[row, col].SetItemAmount(slot.Amount);
                 }
                 else
                 {

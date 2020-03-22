@@ -117,14 +117,6 @@ public class Inventory
 
         UpdateUI();
     }
-
-    public void SwitchSlots(Slot slot1, Slot slot2)
-    {
-        Item tmpItem = slot1.Item;
-        int tmpAmount = slot1.Amount;
-        slot1.SetItem(slot2.Item);
-        //slot1.Amount = slot2.Amount;
-    }
   
     public void UseItem(Item item)
     {
@@ -238,6 +230,16 @@ public class Inventory
                 Clear();
             }
             else if (Amount < 0) { Debug.LogError("Try to remove more items than it exists in inventory"); Clear(); }
+        }
+
+        public static void SwitchSlots(Slot slot1, Slot slot2)
+        {
+            Item tmpItem = slot1.Item;
+            int tmpAmount = slot1.Amount;
+            slot1.Item = slot2.Item;
+            slot1.Amount = slot2.Amount;
+            slot2.Item = tmpItem;
+            slot2.Amount = tmpAmount;
         }
 
     }

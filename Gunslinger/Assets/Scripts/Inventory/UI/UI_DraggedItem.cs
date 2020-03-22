@@ -12,6 +12,8 @@ public class UI_DraggedItem : MonoBehaviour
     private Image image;
     private Text amount;
 
+    Inventory.Slot slot;
+
     private void Awake()
     {
         Instance = this;
@@ -34,9 +36,9 @@ public class UI_DraggedItem : MonoBehaviour
         transform.localPosition = localPoint;
     }
 
-    public Item GetItem()
+    public Inventory.Slot GetSlot()
     {
-        return item;
+        return slot;
     }
 
     public void SetItem(Item item)
@@ -62,13 +64,13 @@ public class UI_DraggedItem : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Show(Item item, int amount)
+    public void Show(Inventory.Slot slot)
     {
         gameObject.SetActive(true);
-
-        SetItem(item);
+        this.slot = slot;
+        SetItem(slot.Item);
         SetSprite(item.Sprite);
-        SetAmount(amount);
+        SetAmount(slot.Amount);
         UpdatePosition();
     }
 }

@@ -43,10 +43,10 @@ public class UI_Inventory : UI_SlotPanel
         {
             slots.Add(inventorySlots[i]);
         }
-        SetSlots(slots);
         if (inventory == null) Debug.LogError("null");
         inventory.onItemChangedCallback += RefreshInventory;
         DrawPanel();
+        SetSlots(slots);
         RefreshInventory();
     }
 

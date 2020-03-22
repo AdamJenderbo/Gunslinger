@@ -25,7 +25,6 @@ public class UI_Item : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
     {
         canvasGroup.alpha = .5f;
         canvasGroup.blocksRaycasts = false;
-        UI_DraggedItem.Instance.Show(item, itemAmount);
         Debug.Log("Begin drag");
     }
 
