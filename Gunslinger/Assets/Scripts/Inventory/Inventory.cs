@@ -165,7 +165,6 @@ public class Inventory
 
     private Slot FindEmptySlot()
     {
-
         foreach (Slot slot in hotkeySlots)
         {
             if (slot.Empty)
