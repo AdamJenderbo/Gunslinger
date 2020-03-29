@@ -99,7 +99,7 @@ MonoBehaviour:
   firePoint: {fileID: 16744386840934572}
   bulletToFire: {fileID: 7685087188359390111, guid: 02042d869b9b4554d8c860405b3a8e67,
     type: 3}
-  fireDelay: 0.5
+  fireDelay: 2
   pickup: {fileID: 7628002520211705607, guid: 5fade0c9d1d81344fbec16e4627c88a4, type: 3}
   gunPrefab: {fileID: 4122131370021387007}
   gunType: 0

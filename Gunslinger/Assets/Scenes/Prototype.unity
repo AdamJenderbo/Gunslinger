@@ -273,18 +273,6 @@ Transform:
   m_Father: {fileID: 1355068845}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &303629288 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8364488016225107575, guid: 29aa1bfa6622c0b408cd0468ef2d624c,
-    type: 3}
-  m_PrefabInstance: {fileID: 5112036900032619288}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 612ad0573b0d3d04dbf9fd8122f27cb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &418506202 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1750384739698867031, guid: a2729f1c16b0fb24fad124b12d640212,
@@ -6691,29 +6679,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00970ec196375c048978ce8805aaa233, type: 3}
---- !u!1 &958412371 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1651543099365395565, guid: 29aa1bfa6622c0b408cd0468ef2d624c,
-    type: 3}
-  m_PrefabInstance: {fileID: 5112036900032619288}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &958412373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958412371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7425262ed67fba94d91052be88053112, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiHotkeySlots:
-  - {fileID: 2020433362}
-  - {fileID: 1338056935}
-  - {fileID: 303629288}
-  - {fileID: 1776474430}
 --- !u!1001 &1078963480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7326,18 +7291,6 @@ Transform:
   m_Father: {fileID: 1442533837}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1338056935 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 696420266456807508, guid: 29aa1bfa6622c0b408cd0468ef2d624c,
-    type: 3}
-  m_PrefabInstance: {fileID: 5112036900032619288}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 612ad0573b0d3d04dbf9fd8122f27cb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1339500061
 GameObject:
   m_ObjectHideFlags: 0
@@ -8171,18 +8124,6 @@ MonoBehaviour:
   dialogLines:
   - Hi!
   - I am the sheriff
---- !u!114 &1776474430 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3490757994571100612, guid: 29aa1bfa6622c0b408cd0468ef2d624c,
-    type: 3}
-  m_PrefabInstance: {fileID: 5112036900032619288}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 612ad0573b0d3d04dbf9fd8122f27cb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1809311046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8408,18 +8349,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00970ec196375c048978ce8805aaa233, type: 3}
---- !u!114 &2020433362 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6750415057049930457, guid: 29aa1bfa6622c0b408cd0468ef2d624c,
-    type: 3}
-  m_PrefabInstance: {fileID: 5112036900032619288}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 612ad0573b0d3d04dbf9fd8122f27cb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2044999176 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 903476769606578432, guid: 00970ec196375c048978ce8805aaa233,
@@ -8702,11 +8631,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4238965111433795381, guid: 29aa1bfa6622c0b408cd0468ef2d624c,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -431
-      objectReference: {fileID: 0}
     - target: {fileID: 4692406815905629782, guid: 29aa1bfa6622c0b408cd0468ef2d624c,
         type: 3}
       propertyPath: m_LocalPosition.x

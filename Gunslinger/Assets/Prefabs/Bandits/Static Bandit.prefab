@@ -230,15 +230,15 @@ MonoBehaviour:
   frontHand: {fileID: 8573249115318402147}
   backHand: {fileID: 8573249115715644926}
   gun: {fileID: 4125461474203486470}
-  body: {fileID: 8573249116002818451}
-  moveSpeed: 5
-  spriteRenderer: {fileID: 0}
-  banditBound: {fileID: 0}
-  behavior: 0
   health: 5
   bounty: 0
+  moveSpeed: 5
+  body: {fileID: 8573249116002818451}
+  behavior: 0
   range: 5
-  shootRange: 10
+  shootRange: 3
+  spriteRenderer: {fileID: 0}
+  banditBound: {fileID: 0}
   animator: {fileID: 1970027305}
 --- !u!1 &8573249116340299563
 GameObject:

@@ -232,11 +232,11 @@ MonoBehaviour:
   gun: {fileID: 4464930825939268977}
   health: 5
   bounty: 100
-  moveSpeed: 4
+  moveSpeed: 2
   body: {fileID: 8573249116002818451}
-  behavior: 1
-  range: 5
-  shootRange: 5
+  detectRange: 6
+  shootRange: 8
+  chaseRange: 10
   spriteRenderer: {fileID: 8573249116340299565}
   banditBound: {fileID: 7977174667539866428, guid: 7f4c4b6cdf678de48a56cf7b350e639d,
     type: 3}

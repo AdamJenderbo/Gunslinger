@@ -206,6 +206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4238965111433795381}
+  - component: {fileID: 958412373}
   m_Layer: 5
   m_Name: HotKey Slots
   m_TagString: Untagged
@@ -233,9 +234,26 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -314, y: -384}
+  m_AnchoredPosition: {x: -314, y: -431}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &958412373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651543099365395565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7425262ed67fba94d91052be88053112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiHotkeySlots:
+  - {fileID: 6750415057049930457}
+  - {fileID: 696420266456807508}
+  - {fileID: 8364488016225107575}
+  - {fileID: 3490757994571100612}
 --- !u!1 &2288600653220890330
 GameObject:
   m_ObjectHideFlags: 0
@@ -4796,15 +4814,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5112036899293713429}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &1643180322552516952 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5781537483215914317, guid: b2c6719eb0f4ce74b8522667648076e2,
-    type: 3}
-  m_PrefabInstance: {fileID: 5112036899293713429}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1643180322552516953 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5781537483215914316, guid: b2c6719eb0f4ce74b8522667648076e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 5112036899293713429}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1643180322552516952 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5781537483215914317, guid: b2c6719eb0f4ce74b8522667648076e2,
     type: 3}
   m_PrefabInstance: {fileID: 5112036899293713429}
   m_PrefabAsset: {fileID: 0}

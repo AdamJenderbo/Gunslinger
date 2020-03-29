@@ -63,8 +63,8 @@ public class Player : Character, ICustomer
     {
         dead = false;
 
-        UI.instance.maxHP = maxHp;
-        UI.instance.HP = hp;
+        //UI.instance.maxHP = maxHp;
+        //UI.instance.HP = hp;
 
         cam = Camera.main;
 

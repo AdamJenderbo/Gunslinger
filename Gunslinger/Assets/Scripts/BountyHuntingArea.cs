@@ -21,7 +21,6 @@ public class BountyHuntingArea : MonoBehaviour
         if (other.tag == "Bandit")
         {
             Bandit bandit = other.GetComponent<Bandit>();
-            bandit.Capture();
             MoneyManager.instance.Increase(bandit.bounty);
             UI.instance.ShowPopup("You got a bounty of " + bandit.bounty + "$");
         }
