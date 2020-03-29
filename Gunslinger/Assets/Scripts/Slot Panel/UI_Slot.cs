@@ -29,7 +29,7 @@ public class UI_Slot : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
                 draggedSlot.Clear();
             }
             else
-                Inventory.Slot.SwitchSlots(draggedSlot, slot);
+                draggedSlot.SwitchSlots(slot);
         };
     }
 
@@ -45,6 +45,9 @@ public class UI_Slot : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
 
     public void ShowIcon()
     {
+        if (slot == null)
+            return;
+
         if(slot.Empty)
         {
             itemIcon.gameObject.SetActive(false);

@@ -5,12 +5,9 @@ using UnityEngine.UI;
 
 public class UI_Inventory : UI_SlotPanel
 {
-    //public Transform pfUI_Item;
-
     Inventory inventory;
 
-    //public Transform itemSlotContainer;
-    //public Transform itemSlotTemplate;
+    public List<UI_Slot> uiHotkeySlots;
 
     public UI_ItemSlot gunSlot;
     public Image gunImage;
@@ -20,9 +17,6 @@ public class UI_Inventory : UI_SlotPanel
 
     private void Awake()
     {
-        //itemSlotContainer = transform.Find("Item Slots");
-        //itemSlotTemplate = itemSlotContainer.Find("Item Slot");
-        //itemSlotTemplate.gameObject.SetActive(false);
         rows = 3;
         colums = 3;
         Setup();
@@ -37,11 +31,9 @@ public class UI_Inventory : UI_SlotPanel
         for(int i = 0; i < inventorySlots.Length - 4; i++)
         {
             slots.Add(inventorySlots[i]);
+            slots[i].onItemChangedCallback += RefreshInventory;
         }
-        if (inventory == null) Debug.LogError("null");
-        inventory.onItemChangedCallback += RefreshInventory;
         DrawPanel();
-        Debug.Log(slots.Count);
         SetSlots(slots);
         RefreshInventory();
     }
@@ -50,17 +42,12 @@ public class UI_Inventory : UI_SlotPanel
     {
         if (hidden)
             return;
-
         DrawIcons();
     }
 
     public void RefreshGunSlot()
     {
         gunImage.sprite = inventory.GetGun().Sprite;
-    }
-
-    public void RefreshHotKeySlots()
-    {
     }
 
 

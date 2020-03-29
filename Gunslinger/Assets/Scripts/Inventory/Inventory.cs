@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Inventory
 {
-    public delegate void OnItemChanged();
-    public OnItemChanged onItemChangedCallback;
     public int Space { get; private set; }
 
     public int Count
@@ -45,89 +43,8 @@ public class Inventory
         }
     }
 
-    public bool AddItem(Item item)
-    {
-        Slot slot;
-        if (item.Stackable)
-        {
-            slot = FindSlotWithItem(item);
 
-            if (slot != null)
-            {
-                slot.AddItems(1);
-                UpdateUI();
-                return true;
-            }
-        }
-
-        if(Full)
-            return false;
-
-        slot = FindEmptySlot();
-        if (slot == null)
-        {
-            Debug.LogError("Inventory.Full does not work!");
-            return false;
-        }
-
-        slot.SetItem(item);
-
-        UpdateUI();
-
-        return true;
-    }
-
-    public void AddItem(Item item, Slot Slot)
-    {
-        Slot.Clear();
-        Slot.SetItem(item);
-
-        UpdateUI();
-    }
-
-    public void MoveItem(Item item, Slot slot)
-    {
-        /*
-        if(!items.Contains(item))
-        {
-            Debug.Log("item not in inventory");
-            return;
-        }
-        */
-
-        FindSlotWithItem(item).Clear();
-        slot.SetItem(item);
-
-        UpdateUI();
-    }
-
-    public void RemoveItem(Item item)
-    {
-        Slot slot = FindSlotWithItem(item);
-
-        if (slot == null)
-            return; // item does not exist in inventory
-
-        if (item.Stackable)
-            slot.RemoveItems(1); // remove one item
-        else
-            slot.Clear();
-
-        UpdateUI();
-    }
-  
-    public void UseItem(Item item)
-    {
-        item.Use();
-        RemoveItem(item);
-    }
-
-    public void UseHotKey(int number)
-    {
-        if (Slots[number].Empty)
-            return;
-        UseItem(Slots[number].Item);
-    }
+    #region Getters & Setters
 
     public Slot[] GetSlots()
     {
@@ -146,7 +63,7 @@ public class Inventory
 
     public void SetHotkeySlot(Item item, Slot hotkeySlot)
     {
-        for(int i = 0; i < hotkeySlots.Length; i++)
+        for (int i = 0; i < hotkeySlots.Length; i++)
         {
             if (hotkeySlot == hotkeySlots[i])
                 hotkeySlots[i].SetItem(item);
@@ -163,39 +80,117 @@ public class Inventory
         return hotkeySlots;
     }
 
+    #endregion
+
+    #region Public methods
+    public bool AddItem(Item item)
+    {
+        Slot slot;
+        if (item.Stackable)
+        {
+            slot = FindSlotWithItem(item);
+
+            if (slot != null)
+            {
+                slot.AddItems(1);
+                return true;
+            }
+        }
+
+        if(Full)
+            return false;
+
+        slot = FindEmptySlot();
+        if (slot == null)
+        {
+            Debug.LogError("Inventory.Full does not work!");
+            return false;
+        }
+
+        slot.SetItem(item);
+        return true;
+    }
+
+    public void AddItem(Item item, Slot Slot)
+    {
+        Slot.Clear();
+        Slot.SetItem(item);
+    }
+
+    public void RemoveItem(Item item)
+    {
+        Slot slot = FindSlotWithItem(item);
+
+        if (slot == null)
+            return; // item does not exist in inventory
+
+        if (item.Stackable)
+            slot.RemoveItems(1); // remove one item
+        else
+            slot.Clear();
+    }
+  
+    public void UseItem(Item item)
+    {
+        item.Use();
+        RemoveItem(item);
+    }
+
+    public void UseHotKey(int number)
+    {
+        if (Slots[number].Empty)
+            return;
+        UseItem(Slots[number].Item);
+    }
+
+    #endregion
+
+    #region Private methods
+
     private Slot FindSlotWithItem(Item item)
     {
+        foreach(Slot slot in hotkeySlots)
+        {
+            if (slot.Item == item)
+                return slot;
+        }
+
         foreach(Slot slot in Slots)
         {
             if (slot.Item == item)
                 return slot;
         }
-        Debug.Log("No slot with item!");
         return null;
     }
 
-    public Slot FindEmptySlot()
+    private Slot FindEmptySlot()
     {
-        foreach (Slot Slot in Slots)
+
+        foreach (Slot slot in hotkeySlots)
         {
-            if (Slot.Empty)
-            {
-                return Slot;
-            }
+            if (slot.Empty)
+                return slot;
         }
-        Debug.LogError("Cannot find an empty inventory slot!");
+
+        foreach (Slot slot in Slots)
+        {
+            if (slot.Empty)
+                return slot;
+        }
         return null;
     }
 
-    private void UpdateUI()
-    {
-        if (onItemChangedCallback != null)
-            onItemChangedCallback.Invoke();
-    }
+
+
+    #endregion
 
     [Serializable]
     public class Slot
     {
+
+        public delegate void OnItemChanged();
+        public OnItemChanged onItemChangedCallback;
+
         [SerializeField]
         public Item Item;
         public int Amount;
@@ -208,17 +203,20 @@ public class Inventory
             Clear();
             Item = item;
             Amount = 1;
+            UpdateUI();
         }
 
         public void Clear()
         {
             Item = null;
             Amount = 0;
+            UpdateUI();
         }
 
         public void AddItems(int amount)
         {
             Amount += amount;
+            UpdateUI();
         }
         public void RemoveItems(int amount) 
         {
@@ -228,16 +226,24 @@ public class Inventory
                 Clear();
             }
             else if (Amount < 0) { Debug.LogError("Try to remove more items than it exists in inventory"); Clear(); }
+            UpdateUI();
         }
 
-        public static void SwitchSlots(Slot slot1, Slot slot2)
+        public void SwitchSlots(Slot slot)
         {
-            Item tmpItem = slot1.Item;
-            int tmpAmount = slot1.Amount;
-            slot1.Item = slot2.Item;
-            slot1.Amount = slot2.Amount;
-            slot2.Item = tmpItem;
-            slot2.Amount = tmpAmount;
+            Item tmpItem = Item;
+            int tmpAmount = Amount;
+            Item = slot.Item;
+            Amount = slot.Amount;
+            slot.Item = tmpItem;
+            slot.Amount = tmpAmount;
+            UpdateUI();
+        }
+
+        private void UpdateUI()
+        {
+            if (onItemChangedCallback != null)
+                onItemChangedCallback.Invoke();
         }
 
     }

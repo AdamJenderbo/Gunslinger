@@ -43,9 +43,13 @@ public class Player : Character, ICustomer
     private Transform grabbedBandit;
     private float banditOffsetX, banditOffsetY;
 
+    #region Inventory
+
     Inventory inventory;
 
     Inventory.Slot weaponSlot;
+
+    #endregion
 
     private void Awake()
     {
