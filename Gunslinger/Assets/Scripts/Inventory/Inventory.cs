@@ -138,9 +138,9 @@ public class Inventory
 
     public void UseHotKey(int number)
     {
-        if (Slots[number].Empty)
+        if (hotkeySlots[number].Empty)
             return;
-        UseItem(Slots[number].Item);
+        UseItem(hotkeySlots[number].Item);
     }
 
     #endregion
