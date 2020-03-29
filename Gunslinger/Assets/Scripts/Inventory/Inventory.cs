@@ -61,9 +61,7 @@ public class Inventory
         }
 
         if(Full)
-        {
             return false;
-        }
 
         slot = FindEmptySlot();
         if (slot == null)

@@ -23,7 +23,13 @@ public class UI_Slot : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
         onDropAction = () =>
         {
             Inventory.Slot draggedSlot = UI_DraggedItem.Instance.GetSlot();
-            Inventory.Slot.SwitchSlots(draggedSlot, slot);
+            if(draggedSlot.Item == slot.Item && slot.Item.Stackable)
+            {
+                slot.AddItems(draggedSlot.Amount);
+                draggedSlot.Clear();
+            }
+            else
+                Inventory.Slot.SwitchSlots(draggedSlot, slot);
         };
     }
 
@@ -39,12 +45,20 @@ public class UI_Slot : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
 
     public void ShowIcon()
     {
-        itemIcon.gameObject.SetActive(true);
-        itemIcon.sprite = slot.Item.Sprite;
-        if (slot.Amount < 2)
-            itemAmount.text = "";
+        if(slot.Empty)
+        {
+            itemIcon.gameObject.SetActive(false);
+        }
         else
-            itemAmount.text = slot.Amount.ToString();
+        {
+            itemIcon.gameObject.SetActive(true);
+            itemIcon.sprite = slot.Item.Sprite;
+            if (slot.Amount < 2)
+                itemAmount.text = "";
+            else
+                itemAmount.text = slot.Amount.ToString();
+        }
+
     }
 
     public void HideIcon()
@@ -68,6 +82,7 @@ public class UI_Slot : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
         Debug.Log("end drag");
         itemIcon.color = new Color(itemIcon.color.r, itemIcon.color.g, itemIcon.color.b, 1f);
         UI_DraggedItem.Instance.Hide();
+        ShowIcon();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -78,5 +93,6 @@ public class UI_Slot : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IE
     {
         UI_DraggedItem.Instance.Hide();
         onDropAction();
+        ShowIcon();
     }
 }

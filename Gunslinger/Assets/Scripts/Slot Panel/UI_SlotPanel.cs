@@ -53,9 +53,10 @@ public class UI_SlotPanel : MonoBehaviour
             if (child == slotPrefab) continue;
             Destroy(child.gameObject);
         }
-
         slotContainer.GetComponent<RectTransform>().anchoredPosition += new Vector2(-(slotSize / 2) * (colums - 1), (slotSize / 2) * (rows - 1)); // move container to center
         GetComponent<RectTransform>().sizeDelta = new Vector2((100 * colums) + 50, (100 * rows) + 50); // scale panel
+        Debug.Log("Slot size: " + slotSize);
+        Debug.Log("Rows: " + rows + " Colums: " + colums);
 
         ui_slots = new UI_Slot[rows, colums];
         ui_buttons = new UI_Button[rows, colums];
