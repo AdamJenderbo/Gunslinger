@@ -6,42 +6,16 @@ public class Player : Character, ICustomer
 {    
     public static Player instance; // singleton instance
 
-    public enum Direction
-    {
-        LEFT, RIGHT
-    }
-
-
     [Header("Stats")]
    
     public int hp;
     public int maxHp;
 
-    [Header("Movement")]
-
-    [HideInInspector]
-    public Direction direction;
-
     [Header("Shooting")]
-
-    public Gun gun;
-    public Gun newGun;
-    public Transform frontHand, backHand;
-    public Transform gunHand;
-
-    [Header("Graphics")]
-
-    public SpriteRenderer sprite;
-    public Animator animator;
-
 
     // private variables
 
     private bool dead;
-    private Camera cam;
-
-    private Transform grabbedBandit;
-    private float banditOffsetX, banditOffsetY;
 
     #region Inventory
 
@@ -49,6 +23,7 @@ public class Player : Character, ICustomer
 
     Inventory.Slot weaponSlot;
 
+    int ammo; 
     #endregion
 
     private void Awake()
@@ -59,28 +34,23 @@ public class Player : Character, ICustomer
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         dead = false;
-
-        //UI.instance.maxHP = maxHp;
-        //UI.instance.HP = hp;
-
-        cam = Camera.main;
-
-        banditOffsetX = -0.3f;
-        banditOffsetY = -0.2f;
-
-        grabbedBandit = null;
-
+        ammo = 50;
+        ReloadGun();
+        UI.instance.maxHP = maxHp;
+        UI.instance.HP = hp;
+        UI.instance.Ammo = ammo;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if(!dead)
-        {
-            
+        {            
             // movement
 
             moveDirection.x = Input.GetAxisRaw("Horizontal");
@@ -88,42 +58,22 @@ public class Player : Character, ICustomer
             moveDirection.Normalize();
             Move();
 
-            // mouse postion
-
-            Vector3 mousePos = Input.mousePosition;
-            Vector3 screenPoint = cam.WorldToScreenPoint(transform.localPosition);
-
-
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-
-            // turn player
-
-            if (mousePos.x > screenPoint.x)
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-                gunHand.localScale = Vector3.one;
-                direction = Direction.RIGHT;
-            }
-            else
-            {
-                transform.localScale = Vector3.one;
-                gunHand.localScale = new Vector3(-1f, -1f, 1f);
-                direction = Direction.LEFT;
-            }
-
-            // rotate gun hand
-
-            Vector2 offset = new Vector2(mousePos.x - screenPoint.x, mousePos.y - screenPoint.y);
-            float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
-            gunHand.rotation = Quaternion.Euler(0, 0, angle);
+            Vector3 target = cam.ScreenToWorldPoint(Input.mousePosition);
+            SetTarget(target);
+            LookAtTarget();
 
             // shooting
 
-            if (Input.GetMouseButtonDown(0) || Input.GetMouseButton(0))
-                gun.Fire();
+            if (Input.GetMouseButtonDown(0))
+            {
+                if(!gun.Fire())
+                {
+                    ReloadGun();
+                }
+            }
 
-            // use hotkey
 
+            #region Hotkeys
             if (Input.GetKeyDown(KeyCode.Alpha1))
                 inventory.UseHotKey(0);
             if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -132,20 +82,17 @@ public class Player : Character, ICustomer
                 inventory.UseHotKey(2);
             if (Input.GetKeyDown(KeyCode.Alpha4))
                 inventory.UseHotKey(3);
+            #endregion
 
-
-
-            if (grabbedBandit != null)
-                grabbedBandit.position = new Vector3(transform.position.x + banditOffsetX, transform.position.y + banditOffsetY, transform.position.z);
 
             // update animation
 
-            animator.SetBool("Walking", moveDirection != Vector2.zero);
+            //animator.SetBool("Walking", moveDirection != Vector2.zero);
         }
         else
         {
             Stop();
-            animator.SetBool("Walking", false);
+            //animator.SetBool("Walking", false);
         }
 
     }
@@ -157,7 +104,7 @@ public class Player : Character, ICustomer
         if (hp <= 0)
         {
             dead = true;
-            UI.instance.ShowGameOverScreen();
+            //UI.instance.ShowGameOverScreen();
         }
 
     }
@@ -175,38 +122,13 @@ public class Player : Character, ICustomer
 
     public void SwitchGun(Gun newGun)
     {
-        if (newGun == null)
-            return;
-
-        //inventory.AddItem(new GunItem(GunPrefabs.Instance.GetGunPrefab(gun.gunType)));
-
-        Destroy(gun.gameObject);
-
-        //inventory.SetGun(new GunItem(newGun));
-
-        if (newGun.hand == Gun.Hand.singleHand)
-        {
-            gunHand = frontHand.transform;
-            frontHand.gameObject.SetActive(true);
-        }
-        else if (newGun.hand == Gun.Hand.doubleHand)
-        {
-            gunHand = backHand.transform;
-            frontHand.gameObject.SetActive(false);
-        }
-
-
-        gun = Instantiate(newGun);
-
-        gun.transform.parent = gunHand.transform;
-        gun.transform.position = gunHand.position;
-        gun.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        gun.transform.localScale = Vector3.one;
     }
 
-    public void GrabBandit(Transform banditPosition)
+    public void ReloadGun()
     {
-        grabbedBandit = banditPosition;
+        if (gun.maxAmmo > ammo) { gun.Reload(ammo); ammo = 0; }
+        else { gun.Reload(gun.maxAmmo); ammo -= gun.maxAmmo; }
+        UI.instance.Ammo = ammo;
     }
 
     public Inventory GetInventory()
@@ -233,4 +155,12 @@ public class Player : Character, ICustomer
     {
         MoneyManager.instance.Increase(amount);
     }
+
+    public void AddAmmo(int amount)
+    {
+        ammo += amount;
+        UI.instance.Ammo = ammo;
+    }
+
+
 }

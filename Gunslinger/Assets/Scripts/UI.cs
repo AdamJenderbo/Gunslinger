@@ -38,6 +38,9 @@ public class UI : MonoBehaviour
 
     public UI_Loot ui_loot;
 
+    // ammo
+    public Text ammoText;
+
 
     public int maxHP
     {
@@ -54,10 +57,15 @@ public class UI : MonoBehaviour
         set { moneyText.text = value.ToString(); }
     }
 
+    public int Ammo
+    {
+        set { ammoText.text = "x " + value.ToString(); }
+    }
+
     private void Awake()
     {
         instance = this;
-        inventory.Hide();
+        //inventory.Hide();
     }
 
     // Start is called before the first frame update

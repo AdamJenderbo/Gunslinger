@@ -223,6 +223,9 @@ public class Bandit : Gunman
 
         public override void Update()
         {
+            bandit.moveDirection = Player.instance.transform.position - bandit.transform.position;
+            bandit.moveDirection.Normalize();
+
             bandit.TargetPlayer();
 
             if (bandit.gun.Loaded)

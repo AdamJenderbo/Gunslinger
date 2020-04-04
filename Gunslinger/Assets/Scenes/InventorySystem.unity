@@ -309,8 +309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b303ef0f5a596d547ad6f4288b31fb2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 2
-  waitToBeCollected: 0.5
 --- !u!1 &1932422977 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8682272060986081888, guid: fda664303134d7543b25978236d5412b,
@@ -329,8 +327,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b303ef0f5a596d547ad6f4288b31fb2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 2
-  waitToBeCollected: 0.5
 --- !u!1001 &1998653961
 PrefabInstance:
   m_ObjectHideFlags: 0

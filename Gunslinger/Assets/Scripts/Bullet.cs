@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 7.5f;
+    public float speed;
     public Rigidbody2D body;
 
     public int damage;
@@ -29,9 +29,9 @@ public class Bullet : MonoBehaviour
         //Instantiate(impactEffect, transform.position, transform.rotation);
         Destroy(gameObject);
 
-        if (other.tag == "Bandit")
+        if (other.tag == "Enemy")
         {
-            other.GetComponent<Bandit>().Damage(damage);
+            other.GetComponent<Enemy>().Damage(damage);
         }
         else if (other.tag == "Player")
         {
