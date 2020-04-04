@@ -33,7 +33,6 @@ public class Bandit : Gunman
     // private variables
 
     private Vector3 moveDirection;
-    private bool collidingWithPlayer;
     private bool grabbed;
     private Vector3 playerPosition;
 
@@ -102,18 +101,10 @@ public class Bandit : Gunman
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player")
-        {
-            collidingWithPlayer = true;
-        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag == "Player")
-        {
-            collidingWithPlayer = false;
-        }
     }
 
     private abstract class State
