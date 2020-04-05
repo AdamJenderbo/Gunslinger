@@ -219,10 +219,6 @@ public class Bandit : Gunman
 
             bandit.TargetPlayer();
 
-            if (bandit.gun.Loaded)
-            {
-                bandit.gun.Fire();
-            }
 
             if(!playerWithinShootRange)
             {

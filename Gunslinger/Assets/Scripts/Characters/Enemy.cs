@@ -19,7 +19,6 @@ public class Enemy : Character
     protected override void Start()
     {
         base.Start();
-        gun.Reload(gun.maxAmmo);
         attackDelay = 1f;
         attackCounter = 0f;
     }
@@ -36,13 +35,9 @@ public class Enemy : Character
         {
             if (attackCounter <= 0)
             {
-                if (!gun.Loaded)
-                {
-                    gun.Reload(gun.maxAmmo);
-                }
                 Stop();
-                gun.Fire();
-                attackCounter = attackDelay;
+                if(gun.Fire())
+                    attackCounter = attackDelay;
             }
         }
         else if(playerWithinChaseRange)

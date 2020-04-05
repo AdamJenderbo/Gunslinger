@@ -16,26 +16,22 @@ public class Character : MonoBehaviour
     private List<Vector3> path;
     private int currentPathIndex;
 
-
     public Bullet bullet;
     protected Gun gun;
     protected Vector3 target;
-    private Transform aim;
+    private Transform gunHand;
 
     protected SpriteRenderer spriteRenderer;
     protected Animator animator;
     protected Camera cam;
-
-
-
 
     protected virtual void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         //animator = GetComponent<Animator>();
-        aim = transform.Find("Aim");
-        gun = aim.Find("Right Hand").GetComponentInChildren<Gun>();
+        gunHand = transform.Find("Aim");
+        gun = gunHand.Find("Right Hand").GetComponentInChildren<Gun>();
         gun.SetBullet(bullet);
         cam = Camera.main;
     }
@@ -46,22 +42,15 @@ public class Character : MonoBehaviour
         Vector2 offset = new Vector2(target.x - transform.position.x, target.y - transform.position.y);
         float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
 
-
-  
-
         if (angle > 90 || angle < -90) { spriteRenderer.transform.localScale = Vector3.one; }
         else { spriteRenderer.transform.localScale = new Vector3(-1, 1, 1); }
 
-        aim.rotation = Quaternion.Euler(0, 0, angle);
-
-        // turn character
-
-
+        gunHand.rotation = Quaternion.Euler(0, 0, angle);
 
         // flip gun
         Vector3 localScale = Vector3.one;
         localScale.y = (angle > 90 || angle < -90) ? -1f : 1f;
-        aim.localScale = localScale;
+        gunHand.localScale = localScale;
     }
 
     protected void SetTarget(Vector3 target)
@@ -105,5 +94,12 @@ public class Character : MonoBehaviour
     protected void Stop()
     {
         rigidBody.velocity = Vector2.zero;
+    }
+
+    protected void SwitchGun(Gun newGun)
+    {
+        Destroy(gun.gameObject);
+        gun = Instantiate(newGun, gunHand).GetComponent<Gun>();
+        gun.SetBullet(bullet);
     }
 }

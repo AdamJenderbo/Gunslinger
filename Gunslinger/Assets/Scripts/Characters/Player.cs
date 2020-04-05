@@ -24,8 +24,10 @@ public class Player : Character, ICustomer
 
     Inventory.Slot weaponSlot;
 
-    int ammo; 
     #endregion
+
+    public Gun secondGun;
+    int ammo;
 
     private void Awake()
     {
@@ -41,7 +43,6 @@ public class Player : Character, ICustomer
 
         dead = false;
         ammo = 50;
-        ReloadGun();
         UI.instance.maxHP = maxHp;
         UI.instance.HP = hp;
         UI.instance.Ammo = ammo;
@@ -67,10 +68,22 @@ public class Player : Character, ICustomer
 
             if (Input.GetMouseButtonDown(0))
             {
-                if(!gun.Fire())
+                if(ammo > 0)
                 {
-                    ReloadGun();
+                    if (gun.Fire())
+                    {
+                        ammo--;
+                        UI.instance.Ammo = ammo;
+                    }
                 }
+         
+            }
+
+            // switch gun
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                SwitchGun(secondGun);
             }
 
 
@@ -119,17 +132,6 @@ public class Player : Character, ICustomer
     public bool PickUp(Item item)
     {
         return inventory.AddItem(item);
-    }
-
-    public void SwitchGun(Gun newGun)
-    {
-    }
-
-    public void ReloadGun()
-    {
-        if (gun.maxAmmo > ammo) { gun.Reload(ammo); ammo = 0; }
-        else { gun.Reload(gun.maxAmmo); ammo -= gun.maxAmmo; }
-        UI.instance.Ammo = ammo;
     }
 
     public Inventory GetInventory()

@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    public enum GunType
+    {
+        REVOLVER, RIFLE
+    }
+
+    public GunType gunType;
+
+
     Transform firePoint;
     Bullet bulletToFire;
     public float fireDelay;
@@ -12,19 +20,11 @@ public class Gun : MonoBehaviour
     public GunPickup pickup;
     public Gun gunPrefab;
 
-    public Item.ItemType gunType;
-
-    public int maxAmmo;
-    int ammo;
-
-
     public bool Ready { get { return shotCooldown.Done(); } }
-    public bool Loaded { get { return ammo > 0; } }
 
     // Start is called before the first frame update
     void Start()
     {
-        ammo = 0;
         shotCooldown = new Cooldown(fireDelay);
         firePoint = transform.Find("Fire Point");
     }
@@ -40,25 +40,18 @@ public class Gun : MonoBehaviour
     {
         if (Ready)
         {
-            if (Loaded)
-            {
-                Instantiate(bulletToFire, firePoint.position, firePoint.rotation);
-                shotCooldown.Reset();
-                ammo--;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return true;
-    }
+            Instantiate(bulletToFire, firePoint.position, firePoint.rotation);
 
-    public void Reload(int amount)
-    {
-        if (ammo + amount > maxAmmo) { Debug.LogWarning("Tried to load to much ammo"); ammo = maxAmmo; return; }
-        ammo += amount;
+            if(gunType == GunType.RIFLE)
+            {
+                Instantiate(bulletToFire, firePoint.position, firePoint.rotation).transform.Rotate(0,0, 10f);
+                Instantiate(bulletToFire, firePoint.position, firePoint.rotation).transform.Rotate(0, 0, -10f);
+            }
+
+            shotCooldown.Reset();
+            return true;
+        }
+        return false;
     }
 
     public void Drop()

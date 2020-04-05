@@ -14,7 +14,6 @@ public class GunItem : Item
         {
             Debug.Log("Gun is null");
         }
-        Player.instance.SwitchGun(gun);
     }
 
     public override bool IsGun()
