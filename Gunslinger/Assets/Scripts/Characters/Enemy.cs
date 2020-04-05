@@ -6,19 +6,19 @@ public class Enemy : Character
 {
     public float detectRange, shootRange, chaseRange;
     float attackDelay, attackCounter;
-    int health;
+    public int health;
 
 
     private bool playerDetected { get { return Vector3.Distance(transform.position, target) < detectRange; } }
     private bool playerWithinShootRange { get { return Vector3.Distance(transform.position, target) < shootRange; } }
     private bool playerWithinChaseRange { get { return Vector3.Distance(transform.position, target) < chaseRange; } }
 
+    Pathfinding pathfinding;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        health = 3;
         gun.Reload(gun.maxAmmo);
         attackDelay = 1f;
         attackCounter = 0f;

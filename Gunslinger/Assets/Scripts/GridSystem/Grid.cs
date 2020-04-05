@@ -22,15 +22,16 @@ public class Grid<TGridObject>
         this.origin = origin;
         gridArray = new TGridObject[width, height];
 
-        for(int x = 0; x < gridArray.GetLength(0); x++)
+        for(int i = 0; i < width; i++)
         {
-            for(int y = 0; y < gridArray.GetLength(1); y++)
+            for (int j = 0; j < height; j++)
             {
+                gridArray[i, j] = createGridObject(this, i, j);
             }
         }
     }
 
-    private Vector3 GetWorldPosition(int x, int y)
+    public Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x, y) * cellSize + origin;
     }
@@ -61,7 +62,10 @@ public class Grid<TGridObject>
         if (x >= 0 && y >= 0 && x < width && y < height)
             return gridArray[x, y];
         else
+        {
             return default;
+        }
+
     }
 
     public TGridObject GetValue(Vector3 worldPosition)

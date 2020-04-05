@@ -1,18 +1,55 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Pathfinding 
 {
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
 
+    static Pathfinding instance;
+
+    public static Pathfinding Instance 
+    { 
+        get
+        {
+            if (instance == null)
+                instance = new Pathfinding();
+            return instance;
+        }
+    }
+
     Grid<PathNode> grid;
     List<PathNode> openList;
     List<PathNode> closedList;
-    public Pathfinding(int width, int height, Vector3 origin)
+
+    Tilemap tilemap;
+
+    public Pathfinding()
     {
-        grid = new Grid<PathNode>(width, height, 10f, origin, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+    }
+
+    public Pathfinding(Tilemap tilemap) : this(tilemap.size.x, tilemap.size.y, tilemap.CellToWorld(tilemap.origin), tilemap)
+    {
+       
+    }
+
+    public Pathfinding(int width, int height, Vector3 origin, Tilemap tilemap)
+    {
+        grid = new Grid<PathNode>(width, height, 0.5f, origin, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+        this.tilemap = tilemap;
+        SetupUnwalkable();
+
+        DrawGrid();
+    }
+
+    public void SetTilemap(Tilemap tilemap)
+    {
+        this.tilemap = tilemap;
+        grid = new Grid<PathNode>(tilemap.size.x, tilemap.size.y, 1f, tilemap.CellToWorld(tilemap.origin), (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+        SetupUnwalkable();
+
     }
 
     public List<Vector3> FindPath(Vector3 start, Vector3 end)
@@ -26,7 +63,7 @@ public class Pathfinding
             List<Vector3> vectorPath = new List<Vector3>();
             foreach(PathNode pathNode in path)
             {
-                vectorPath.Add(new Vector3(pathNode.x, pathNode.y) * grid.cellSize + Vector3.one * grid.cellSize * 0.5f);
+                vectorPath.Add((new Vector3(pathNode.x, pathNode.y) * grid.cellSize + Vector3.one * grid.cellSize * 0.5f) + grid.origin);
             }
             return vectorPath;
         }
@@ -155,5 +192,39 @@ public class Pathfinding
             }
         }
         return lowestFCostNode;
+    }
+
+    public void SetupUnwalkable()
+    {
+        for(int i = 0; i < grid.Width; i++)
+        {
+            for(int j = 0; j < grid.Height; j++)
+            {
+                Tile tile = tilemap.GetTile<Tile>(GridToCell(i,j));
+                if (tile == null)
+                    continue;
+                if(tile.colliderType == Tile.ColliderType.Sprite)
+                {
+                    grid.GetValue(i, j).isWalkable = false;
+                }
+            }
+        }
+    }
+
+    private Vector3Int GridToCell(int x, int y)
+    {
+        return tilemap.WorldToCell(grid.GetWorldPosition(x, y));
+    }
+
+    private void DrawGrid()
+    {
+        for(int x = 0; x < grid.Width; x++)
+        {
+            for(int y = 0; y < grid.Height; y++)
+            {
+                Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f);
+                Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f);
+            }
+        }
     }
 }

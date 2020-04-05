@@ -13,6 +13,8 @@ public class Character : MonoBehaviour
     public float moveSpeed;
     protected Rigidbody2D rigidBody;
     protected Vector2 moveDirection;
+    private List<Vector3> path;
+    private int currentPathIndex;
 
 
     public Bullet bullet;
@@ -22,11 +24,9 @@ public class Character : MonoBehaviour
 
     protected SpriteRenderer spriteRenderer;
     protected Animator animator;
-
-    // private variables
-
-
     protected Camera cam;
+
+
 
 
     protected virtual void Start()
@@ -66,15 +66,35 @@ public class Character : MonoBehaviour
 
     protected void SetTarget(Vector3 target)
     {
+        currentPathIndex = 0;
+        path = Pathfinding.Instance.FindPath(transform.position, target);
+        if(path != null && path.Count > 1)
+        {
+            path.RemoveAt(0);
+        }
         this.target = target;
     }
 
 
     protected void FollowTarget()
     {
-        moveDirection = target - transform.position;
-        moveDirection.Normalize();
-        Move();
+        if(path != null)
+        {
+            Vector3 targetPosition = path[currentPathIndex];
+            if(Vector3.Distance(transform.position, targetPosition) > .1f)
+            {
+                Vector3 moveDir = (targetPosition - transform.position).normalized;
+                transform.position = transform.position + moveDir * moveSpeed * Time.deltaTime;
+            }
+            else
+            {
+                currentPathIndex++;
+                if(currentPathIndex >= path.Count)
+                {
+                    Stop();
+                }
+            }
+        }
     }
 
     protected void Move()

@@ -381,6 +381,7 @@ MonoBehaviour:
   detectRange: 0
   shootRange: 5
   chaseRange: 10
+  health: 2
 --- !u!1001 &8112703082418462637
 PrefabInstance:
   m_ObjectHideFlags: 0
