@@ -98,6 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8.5
   body: {fileID: 6059583455939340196}
+  impactEffect: {fileID: 4583936874712641826, guid: 85b5e98a8ce979444a9621ef4fd293ec,
+    type: 3}
   damage: 1
 --- !u!50 &6059583455939340196
 Rigidbody2D:

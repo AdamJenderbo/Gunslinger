@@ -4,46 +4,56 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    public float detectRange, shootRange, chaseRange;
-    float attackDelay, attackCounter;
+    // stats
     public int health;
+    public float attackSpeed;
 
 
-    private bool playerDetected { get { return Vector3.Distance(transform.position, target) < detectRange; } }
-    private bool playerWithinShootRange { get { return Vector3.Distance(transform.position, target) < shootRange; } }
-    private bool playerWithinChaseRange { get { return Vector3.Distance(transform.position, target) < chaseRange; } }
+    public Player player;
 
-    Pathfinding pathfinding;
+    // state
+    public State startState;
+    private State state;
 
-    // Start is called before the first frame update
+
+    // modules
+    IEnemyTargeting enemyTargeting;
+    [HideInInspector]
+    public Shooting shooting;
+
+    // field of view
+    //[SerializeField] private Transform pfFieldOfView;
+    //[HideInInspector]
+    //FieldOfView fieldOfView;
+
+
+    private void Awake()
+    {
+        enemyTargeting = GetComponent<IEnemyTargeting>();
+        shooting = GetComponent<Shooting>();
+    }
+
     protected override void Start()
     {
         base.Start();
-        attackDelay = 1f;
-        attackCounter = 0f;
+        player = Player.instance;
+        //fieldOfView = Instantiate(pfFieldOfView, null).GetComponent<FieldOfView>();
+        //fieldOfView.SetFov(enemyTargeting.GetFOV());
+        //fieldOfView.SetViewDistance(enemyTargeting.GetViewDistance() / 2);
+        state = startState;
+        state.Begin();
+
+
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        if (attackCounter > 0) attackCounter -= Time.deltaTime;
+        base.Update();
+        //fieldOfView.SetOrigin(transform.position);
+        //fieldOfView.SetAimAngle(GetAimAngle());
+        //fieldOfView.SetFov(0f);
+        //fieldOfView.SetViewDistance(0f);
 
-        SetTarget(Player.instance.transform.position);
-        LookAtTarget();
-
-        if (playerWithinShootRange)
-        {
-            if (attackCounter <= 0)
-            {
-                Stop();
-                if(gun.Fire())
-                    attackCounter = attackDelay;
-            }
-        }
-        else if(playerWithinChaseRange)
-        {
-            FollowTarget();
-        }
     }
 
     public void Damage(int damage)
@@ -54,6 +64,43 @@ public class Enemy : Character
 
     private void Kill()
     {
+        //Destroy(fieldOfView.gameObject);
         Destroy(gameObject);
     }
+
+    public void ChangeState(State newState)
+    {
+        state.End();
+        state.enabled = false;
+        state = newState;
+        state.enabled = true;
+        state.Begin();
+    }
+
+
+
+    public bool SeesPlayer()
+    {
+        return enemyTargeting.SeesPlayer();
+    }
+
+
+    public void ToIdleView()
+    {
+        //fieldOfView.SetColor(new Color(1, 1, 1));
+        //fieldOfView.SetFov(45f);
+    }
+
+    public void ToSearchView()
+    {
+        //fieldOfView.SetColor(new Color(1, 1, 0));
+        //fieldOfView.SetFov(45f);
+    }
+
+    public void ToShootView()
+    {
+        //fieldOfView.SetColor(new Color(1, 0, 0));
+        //fieldOfView.SetFov(3f);
+    }
+
 }

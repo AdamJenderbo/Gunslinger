@@ -4,102 +4,102 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public List<Sprite> sprites;
 
-    [Header("Movement")]
-
-    // movement
-
-    public float moveSpeed;
-    protected Rigidbody2D rigidBody;
-    protected Vector2 moveDirection;
-    private List<Vector3> path;
-    private int currentPathIndex;
-
-    public Bullet bullet;
-    protected Gun gun;
-    protected Vector3 target;
-    private Transform gunHand;
-
+    private IMoveVelocity moveVelocity;
+    private IMovePosition movePosition;
+    private ICharacterAim aim;
     protected SpriteRenderer spriteRenderer;
     protected Animator animator;
-    protected Camera cam;
 
+    // hit animation
+    SpriteRenderer[] spriteRenderers;
+    Material matDefault;
+    Material matWhite;
+
+
+    // Start is called before the first frame update
     protected virtual void Start()
     {
-        rigidBody = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        //animator = GetComponent<Animator>();
-        gunHand = transform.Find("Aim");
-        gun = gunHand.Find("Right Hand").GetComponentInChildren<Gun>();
-        gun.SetBullet(bullet);
-        cam = Camera.main;
+        moveVelocity = GetComponent<IMoveVelocity>();
+        movePosition = GetComponent<IMovePosition>();
+        aim = GetComponent<ICharacterAim>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>(); // grab all sprite renderers
+        matDefault = spriteRenderer.material;
+        matWhite = Resources.Load("WhiteFlash", typeof(Material)) as Material;
     }
 
-    protected void LookAtTarget()
+    protected virtual void Update()
     {
-        // rotate gun hand
-        Vector2 offset = new Vector2(target.x - transform.position.x, target.y - transform.position.y);
-        float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
-
-        if (angle > 90 || angle < -90) { spriteRenderer.transform.localScale = Vector3.one; }
-        else { spriteRenderer.transform.localScale = new Vector3(-1, 1, 1); }
-
-        gunHand.rotation = Quaternion.Euler(0, 0, angle);
-
-        // flip gun
-        Vector3 localScale = Vector3.one;
-        localScale.y = (angle > 90 || angle < -90) ? -1f : 1f;
-        gunHand.localScale = localScale;
+        if (moveVelocity.GetVelocity() == Vector3.zero)
+            PlayIdleAnimation();
+        else
+            PlayWalkAnimation();
     }
 
-    protected void SetTarget(Vector3 target)
+    public Vector3 GetVelocity()
     {
-        currentPathIndex = 0;
-        path = Pathfinding.Instance.FindPath(transform.position, target);
-        if(path != null && path.Count > 1)
+        return moveVelocity.GetVelocity();
+    }
+
+    public void SetVelocity(Vector3 velocity)
+    {
+        moveVelocity.SetVelocity(velocity);
+    }
+
+    public void MoveToPosition(Vector3 position)
+    {
+        movePosition.SetMovePosition(position);
+    }
+
+    public void Stop()
+    {
+        moveVelocity.SetVelocity(Vector3.zero);
+    }
+
+    public Vector3 GetAimDir()
+    {
+        return aim.GetAimDir();
+    }
+
+    protected float GetAimAngle()
+    {
+        return aim.GetAimAngle();
+    }
+
+    public void AimAt(Vector3 position)
+    {
+        aim.SetTarget(position);
+    }
+
+    // animation
+
+    public void PlayIdleAnimation()
+    {
+        animator.SetBool("Walking", false);
+    }
+
+    public void PlayWalkAnimation()
+    {
+        animator.SetBool("Walking", true);
+    }
+
+
+    public void Flash()
+    {
+        foreach (SpriteRenderer renderer in spriteRenderers)
         {
-            path.RemoveAt(0);
+            renderer.material = matWhite;
         }
-        this.target = target;
+        Invoke("ResetMaterial", .1f);
     }
 
-
-    protected void FollowTarget()
+    private void ResetMaterial()
     {
-        if(path != null)
+        foreach (SpriteRenderer renderer in spriteRenderers)
         {
-            Vector3 targetPosition = path[currentPathIndex];
-            if(Vector3.Distance(transform.position, targetPosition) > .1f)
-            {
-                Vector3 moveDir = (targetPosition - transform.position).normalized;
-                transform.position = transform.position + moveDir * moveSpeed * Time.deltaTime;
-            }
-            else
-            {
-                currentPathIndex++;
-                if(currentPathIndex >= path.Count)
-                {
-                    Stop();
-                }
-            }
+            renderer.material = matDefault;
         }
-    }
-
-    protected void Move()
-    {
-        rigidBody.velocity = moveDirection * moveSpeed;
-    }
-
-    protected void Stop()
-    {
-        rigidBody.velocity = Vector2.zero;
-    }
-
-    protected void SwitchGun(Gun newGun)
-    {
-        Destroy(gun.gameObject);
-        gun = Instantiate(newGun, gunHand).GetComponent<Gun>();
-        gun.SetBullet(bullet);
     }
 }

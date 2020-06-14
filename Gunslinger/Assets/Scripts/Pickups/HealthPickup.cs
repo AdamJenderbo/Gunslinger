@@ -11,7 +11,7 @@ public class HealthPickup : Pickup
     {
         onTriggerAction = (Player player) =>
         {
-            player.Heal(healAmount);
+            //player.Heal(healAmount);
             Destroy(gameObject);
         };
     }

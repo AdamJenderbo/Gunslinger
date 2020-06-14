@@ -37,7 +37,7 @@ public class Pathfinding
 
     public Pathfinding(int width, int height, Vector3 origin, Tilemap tilemap)
     {
-        grid = new Grid<PathNode>(width, height, 0.5f, origin, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+        grid = new Grid<PathNode>(width, height, 0.1f, origin, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
         this.tilemap = tilemap;
         SetupUnwalkable();
 
@@ -63,7 +63,7 @@ public class Pathfinding
             List<Vector3> vectorPath = new List<Vector3>();
             foreach(PathNode pathNode in path)
             {
-                vectorPath.Add((new Vector3(pathNode.x, pathNode.y) * grid.cellSize + Vector3.one * grid.cellSize * 0.5f) + grid.origin);
+                vectorPath.Add((new Vector3(pathNode.x, pathNode.y) * grid.cellSize) + grid.origin + new Vector3(grid.cellSize / 2, grid.cellSize / 2, 0));
             }
             return vectorPath;
         }

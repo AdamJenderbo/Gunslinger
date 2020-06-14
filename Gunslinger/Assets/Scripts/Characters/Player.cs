@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Player : Character, ICustomer
-{    
+public class Player : Character
+{
     public static Player instance; // singleton instance
 
     [Header("Stats")]
-   
+
     public int hp;
     public int maxHp;
 
@@ -26,95 +26,71 @@ public class Player : Character, ICustomer
 
     #endregion
 
-    public Gun secondGun;
+    public GunItem equippedGun;
+    public GunItem secondGun;
+
+
     int ammo;
+
+    // modules
+
+    public IMoveVelocity moveVelocity;
+    public ICharacterAim aim;
+    [HideInInspector]
+    public Shooting shooting;
+
 
     private void Awake()
     {
         instance = this;
         inventory = new Inventory(13);
-        //inventory.SetGun(new GunItem(gun));
     }
 
     // Start is called before the first frame update
+
     protected override void Start()
     {
         base.Start();
+        moveVelocity = GetComponent<IMoveVelocity>();
+        aim = GetComponent<ICharacterAim>();
+        shooting = GetComponent<Shooting>();
 
         dead = false;
         ammo = 50;
+
+        PlayIdleAnimation();
+
         UI.instance.maxHP = maxHp;
         UI.instance.HP = hp;
         UI.instance.Ammo = ammo;
+
+        UI_Weapon.Instance.SetIcon1(equippedGun.Sprite);
+        UI_Weapon.Instance.SetIcon2(secondGun.Sprite);
     }
 
-    // Update is called once per frame
-    private void Update()
+    protected override void Update()
     {
-        if(!dead)
-        {            
-            // movement
+        base.Update();
 
-            moveDirection.x = Input.GetAxisRaw("Horizontal");
-            moveDirection.y = Input.GetAxisRaw("Vertical");
-            moveDirection.Normalize();
-            Move();
-
-            Vector3 target = cam.ScreenToWorldPoint(Input.mousePosition);
-            SetTarget(target);
-            LookAtTarget();
-
-            // shooting
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                if(ammo > 0)
-                {
-                    if (gun.Fire())
-                    {
-                        ammo--;
-                        UI.instance.Ammo = ammo;
-                    }
-                }
-         
-            }
-
-            // switch gun
-
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                SwitchGun(secondGun);
-            }
-
-
-            #region Hotkeys
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                inventory.UseHotKey(0);
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-                inventory.UseHotKey(1);
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                inventory.UseHotKey(2);
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-                inventory.UseHotKey(3);
-            #endregion
-
-
-            // update animation
-
-            //animator.SetBool("Walking", moveDirection != Vector2.zero);
-        }
-        else
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            Stop();
-            //animator.SetBool("Walking", false);
+            SwitchGun();
         }
 
+        Vector3 velocity = moveVelocity.GetVelocity();
+
+        if (velocity == Vector3.zero)
+            PlayIdleAnimation();
+        else
+            PlayWalkAnimation();
     }
+
 
     public void Damage(int damage)
     {
         hp -= damage;
         UI.instance.HP = hp;
+        Flash();
         if (hp <= 0)
         {
             dead = true;
@@ -132,6 +108,16 @@ public class Player : Character, ICustomer
     public bool PickUp(Item item)
     {
         return inventory.AddItem(item);
+    }
+
+    public void PickUpGun(GunItem gun)
+    {
+        shooting.DropGun();
+        shooting.SetGun(gun.gun);
+        equippedGun = gun;
+
+        UI_Weapon.Instance.SetIcon1(equippedGun.Sprite);
+        UI_Weapon.Instance.SetIcon2(secondGun.Sprite);
     }
 
     public Inventory GetInventory()
@@ -165,5 +151,14 @@ public class Player : Character, ICustomer
         UI.instance.Ammo = ammo;
     }
 
+    public void SwitchGun()
+    {
+        GunItem tmp = equippedGun;
+        equippedGun = secondGun;
+        secondGun = tmp;
+        shooting.SetGun(equippedGun.gun);
 
+        UI_Weapon.Instance.SetIcon1(equippedGun.Sprite);
+        UI_Weapon.Instance.SetIcon2(secondGun.Sprite);
+    }
 }

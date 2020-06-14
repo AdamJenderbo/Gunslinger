@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    bool playerEntered;
+    protected bool playerEntered = false;
     protected Player player;
     public Action<Player> onTriggerAction;
 
-    void Update()
+    protected virtual void Update()
     {
         if (playerEntered)
         {

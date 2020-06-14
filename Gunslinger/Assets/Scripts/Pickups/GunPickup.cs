@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunPickup : ItemPickup
+public class GunPickup : Pickup
 {
     public GunItem gunItem;
 
@@ -10,10 +10,17 @@ public class GunPickup : ItemPickup
     {
         onTriggerAction = (Player player) =>
         {
-            if (player.PickUp(gunItem))
-            {
-                Destroy(gameObject);
-            }
+            player.PickUpGun(gunItem);
+            Destroy(gameObject);
         };
+    }
+
+    protected override void Update()
+    {
+        if (playerEntered)
+        {
+            if(Input.GetKeyDown(KeyCode.E))
+                onTriggerAction(player);
+        }
     }
 }

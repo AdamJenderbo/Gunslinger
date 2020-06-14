@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Saloon.unity
     guid: 1a89236c9afe1a249af4cf7e7aef1807
+  - enabled: 1
+    path: Assets/Scenes/Demo.unity
+    guid: 3459d7c5242cb8d41af3e342a6049f37
   m_configObjects: {}

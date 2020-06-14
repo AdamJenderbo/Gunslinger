@@ -70,8 +70,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -956697121
   m_SortingLayer: 5
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5cb78c284402bea4d835733bd3e1118a, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 10a67f46f34c7cb49b7240798c954ef2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunType: 1
   fireDelay: 1
-  pickup: {fileID: 0}
+  pickup: {fileID: 4845881041770958690, guid: 3948178e8c8dbe74d99bd9f42972d91f, type: 3}
   gunPrefab: {fileID: 0}
 --- !u!1 &4872895543579749838
 GameObject:
